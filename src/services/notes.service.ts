@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map, of, catchError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { INote } from 'src/model/note';
 
 @Injectable({
@@ -11,19 +12,19 @@ export class NotesService {
   constructor(public httpClient: HttpClient) { }
 
   public getNotes() : Observable<INote[]>{
-    return this.httpClient.get<INote[]>("https://localhost:7028/api/v1/notes");
+    return this.httpClient.get<INote[]>(`${environment.baseUrl}/notes`);
   }
 
   public getNote(noteId: number) : Observable<INote>{
-    return this.httpClient.get<INote>(`https://localhost:7028/api/v1/notes/${noteId}`);
+    return this.httpClient.get<INote>(`${environment.baseUrl}/notes/${noteId}`);
   }
   
   public addNote(note: INote) : Observable<INote>{
-    return this.httpClient.post<INote>(`https://localhost:7028/api/v1/notes`, note);
+    return this.httpClient.post<INote>(`${environment.baseUrl}/notes`, note);
   }
 
   public updateNote(note: INote) : Observable<INote|null>{
-    return this.httpClient.patch<INote>(`https://localhost:7028/api/v1/notes/${note.id}`, note)
+    return this.httpClient.patch<INote>(`${environment.baseUrl}/notes/${note.id}`, note)
     .pipe(
       catchError((err)=>{
         return of(null);
@@ -32,7 +33,7 @@ export class NotesService {
   }
  
   public deleteNote(note: INote) : Observable<boolean>{
-    return this.httpClient.delete(`https://localhost:7028/api/v1/notes/${note.id}`)
+    return this.httpClient.delete(`${environment.baseUrl}/notes/${note.id}`)
     .pipe(
       map((result) =>{
         return true;
