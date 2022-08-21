@@ -1,11 +1,56 @@
 
 
-
-
-
 <div class="bezel">
 
   <div class="screen">
+
+    <ng-template ngFor let-note [ngForOf]="notes" let-last="last">
+
+      <form class="note" #noteForm="ngForm" 
+            (ngSubmit)="onSubmit(noteForm, note)">
+
+        <button type="button"  
+                class="btn delete" 
+                *ngIf="!last"
+                (click)="onDelete(note)">
+                +
+        </button>
+  
+        <div class="note-header">
+          
+          <input type="text" placeholder="Title" name="title" 
+                class="textbox"
+                [(ngModel)]="note.title"
+                required
+                [minlength]="4"
+                [maxlength]="32">      
+        </div>
+      
+        <div class="note-content">
+
+          <textarea placeholder="Note" name="content" 
+                    class="textbox"
+                    [(ngModel)]="note.content"
+                    required
+                    [maxlength]="256">
+          </textarea>
+
+        </div>
+      
+        <div class="note-footer">
+          
+          <button type="submit" 
+                  class="btn save"
+                  *ngIf="noteForm.valid && noteForm.dirty">
+                  SAVE
+          </button>
+
+        </div>
+
+      </form>
+
+    </ng-template>
+
   </div>
   
   <div class="controls">
